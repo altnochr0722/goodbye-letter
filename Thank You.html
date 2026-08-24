@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Farewell Note</title>
+    <!-- Beautiful cursive Google Font for the typed text -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Playfair Display', serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Decorative background elements */
+        .bg-decor {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        .flower-top-left { top: -20px; left: -20px; font-size: 5rem; transform: rotate(-20deg); }
+        .flower-bottom-right { bottom: -20px; right: -20px; font-size: 6rem; transform: rotate(15deg); }
+        .charm-1 { top: 15%; right: 15%; font-size: 2.5rem; animation: float 4s ease-in-out infinite; }
+        .charm-2 { bottom: 20%; left: 12%; font-size: 2.2rem; animation: float 5s ease-in-out infinite 1s; }
+        .charm-3 { top: 25%; left: 20%; font-size: 1.8rem; animation: float 3.5s ease-in-out infinite 0.5s; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        /* Envelope Stage Container */
+        .stage {
+            position: relative;
+            width: 340px;
+            height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Top Message above the envelope */
+        .top-note {
+            font-size: 1rem;
+            color: #880e4f;
+            font-style: italic;
+            text-align: center;
+            margin-bottom: 20px;
+            opacity: 0.9;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            pointer-events: none;
+            line-height: 1.4;
+            max-width: 320px;
+        }
+
+        .wrapper {
+            position: relative;
+            width: 320px;
+            height: 220px;
+            cursor: pointer;
+            z-index: 10;
+            transition: transform 0.8s ease, opacity 0.8s ease;
+        }
+
+        .envelope {
+            width: 100%;
+            height: 100%;
+            background-color: #f8bbd0;
+            position: relative;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            box-shadow: 0 15px 35px rgba(186, 104, 200, 0.3);
+        }
+
+        .wrapper:hover:not(.open) {
+            transform: translateY(-5px);
+        }
+
+        /* Envelope Flap */
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-top: 120px solid #f06292;
+            transform-origin: top;
+            transition: transform 0.5s ease;
+            z-index: 4;
+        }
+
+        /* Envelope Pocket Details */
+        .pocket {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 160px solid #f48fb1;
+            border-right: 160px solid #f48fb1;
+            border-bottom: 110px solid #ec407a;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            z-index: 3;
+        }
+
+        /* Wax Seal Button */
+        .wax-seal {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 55px;
+            height: 55px;
+            background: radial-gradient(circle, #ffd700 0%, #daa520 70%, #b8860b 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 5;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            font-size: 1.4rem;
+        }
+
+        .hint-text {
+            position: absolute;
+            bottom: -35px;
+            width: 100%;
+            text-align: center;
+            color: #880e4f;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Letter Paper */
+        .letter {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: 440px;
+            max-width: 90vw;
+            height: 540px;
+            max-height: 85vh;
+            background: #fff8f9;
+            border-radius: 12px;
+            padding: 35px 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            z-index: 2;
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease, visibility 0.8s;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .letter-content {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.35rem;
+            color: #4a148c;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        /* Opening Animations */
+        .stage.open .top-note {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .wrapper.open .flap {
+            transform: rotateX(180deg);
+        }
+
+        .wrapper.open .wax-seal,
+        .wrapper.open .hint-text {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .wrapper.open {
+            transform: translateY(120px) scale(0.9);
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .letter.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+            z-index: 20;
+        }
+
+        /* Blinking cursor effect */
+        .cursor::after {
+            content: '│';
+            animation: blink 0.8s infinite;
+            color: #ab47bc;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Decorative Elements -->
+    <div class="bg-decor flower-top-left">🌸🌺</div>
+    <div class="bg-decor flower-bottom-right">🌸🌷</div>
+    <div class="bg-decor charm-1">✨</div>
+    <div class="bg-decor charm-2">🎀</div>
+    <div class="bg-decor charm-3">🗝️</div>
+
+    <div class="stage" id="stageContainer">
+        <!-- Message placed above the envelope -->
+        <div class="top-note" id="topNote">
+            I wrote it all in English cause I feel more comfortable in English to say this<br>         
+            It's easier this way
+        </div>
+
+        <!-- Interactive Envelope -->
+        <div class="wrapper" id="envelopeWrapper">
+            <div class="envelope">
+                <div class="flap"></div>
+                <div class="pocket"></div>
+                <div class="wax-seal">🌹</div>
+            </div>
+            <div class="hint-text">Click to open</div>
+        </div>
+
+        <!-- Centered Letter Paper -->
+        <div class="letter" id="letterPaper">
+            <div class="letter-content" id="typedText"></div>
+        </div>
+    </div>
+
+    <script>
+        const wrapper = document.getElementById('envelopeWrapper');
+        const stageContainer = document.getElementById('stageContainer');
+        const letterPaper = document.getElementById('letterPaper');
+        const typedTextContainer = document.getElementById('typedText');
+        let isOpen = false;
+
+        // Your exact message
+        const lines = [
+            "I’ve spent a lot of time thinking about us...",
+            "About where we started, and where we ended up.",
+            "So I made this letter for you, to express my feelings.",
+            "I'm not gonna try to convince you to stay with me. I just wanted to give a proper goodbye to someone who became so important to me so quickly.",
+            "I know this is what you think is the safest choice, and even though it's hard for me to accept, I respect your decision. I just wanted to say what I didn't get the chance to say properly.",
+            "I really wanted it to work between us. I wanted it to be real, but it didn't work out. I respect that you're still dealing with your past and that you're not ready for another relationship. I'm also really grateful that you were honest with me and told me everything.",
+            "More importantly, I wanted to say thank you to you.",
+            "Thank you for coming into my life.",
+            "Thank you for bringing joy to me just by texting me.",
+            "Thank you for all the late-night talks which made me really want what we had to be real.",
+            "Thank you for every little moment we shared, even though we were far away from each other.",
+            "Thank you for everything.",
+            "You changed me into a better version of myself in such a short time. And I don't think I'm gonna let go of everything so easily. But I'm also not gonna stay here forever.",
+            "I hope you overcome your past and move forward. I hope you find the happiness and feelings you're looking for.",
+            "And if you ever need me or just need someone to talk to, you can always reach out to me. I'll be here.",
+            "I really cared about you. I loved you.",
+            "Goodbye. ✨"
+        ];
+
+        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+        async function typeWriter() {
+            await sleep(600);
+            typedTextContainer.classList.add('cursor');
+
+            for (let i = 0; i < lines.length; i++) {
+                const lineText = lines[i];
+                
+                for (let j = 0; j < lineText.length; j++) {
+                    const char = lineText[j];
+                    typedTextContainer.textContent += char;
+
+                    let delay = Math.random() * 25 + 35;
+
+                    if (char === '.' || char === '?' || char === '!') {
+                        delay = 700;
+                    } else if (char === ',') {
+                        delay = 350;
+                    }
+
+                    await sleep(delay);
+
+                    // Auto-scrolls so the newly typed lines remain visible
+                    letterPaper.scrollTop = letterPaper.scrollHeight;
+                }
+
+                typedTextContainer.textContent += "\n\n";
+                await sleep(400);
+            }
+        }
+
+        wrapper.addEventListener('click', () => {
+            if (!isOpen) {
+                isOpen = true;
+                stageContainer.classList.add('open');
+                wrapper.classList.add('open');
+
+                setTimeout(() => {
+                    letterPaper.classList.add('show');
+                    typeWriter();
+                }, 400);
+            }
+        });
+    </script>
+</body>
+</html>
