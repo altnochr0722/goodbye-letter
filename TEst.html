@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Style Comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">    <style>
+        body {
+            background: #fce4ec;
+            font-family: 'Caveat', cursive;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: #fff8f9;
+            border: 2px solid #f8bbd0;
+            border-radius: 12px;
+            width: 380px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            color: #4a148c;
+            font-size: 1.3rem;
+            line-height: 1.6;
+        }
+
+        .label {
+            font-family: sans-serif;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #880e4f;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #f8bbd0;
+            padding-bottom: 4px;
+        }
+
+        /* Option 1 */
+        .style-1 {
+            display: inline-block;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #880e4f;
+            margin-top: 10px;
+            padding: 2px 10px;
+            background: linear-gradient(120deg, rgba(248, 187, 208, 0.7) 0%, rgba(244, 143, 177, 0.5) 100%);
+            border-radius: 4px;
+        }
+
+        /* Option 2 */
+        .style-2 {
+            display: inline-block;
+            font-size: 1.7rem;
+            color: #ad1457;
+            margin-top: 10px;
+            font-style: italic;
+            letter-spacing: 1px;
+            animation: softPulse 2.5s infinite ease-in-out;
+        }
+
+        @keyframes softPulse {
+            0%, 100% { opacity: 0.85; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.03); }
+        }
+
+        /* Option 3 */
+        .style-3 {
+            display: block;
+            font-size: 1.5rem;
+            color: #6a1b9a;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed rgba(248, 187, 208, 0.8);
+            letter-spacing: 0.8px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Card 1 -->
+    <div class="card">
+        <div class="label">Option 1: Soft Pastel Highlight</div>
+        I really cared about you. I loved you.<br><br>
+        Goodbye.<br><br>
+        <span class="style-1">Хайртай шүү. 💖</span>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="card">
+        <div class="label">Option 2: Deep Rose & Gentle Pulse</div>
+        I really cared about you. I loved you.<br><br>
+        Goodbye.<br><br>
+        <span class="style-2">Хайртай шүү. 💖</span>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card">
+        <div class="label">Option 3: Separated Sign-Off Line</div>
+        I really cared about you. I loved you.<br><br>
+        Goodbye.
+        <span class="style-3">Хайртай шүү. 💖</span>
+    </div>
+
+</body>
+</html>
